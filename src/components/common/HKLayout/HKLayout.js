@@ -13,15 +13,10 @@ class HKLayout extends React.Component {
     };
   }
 
-  renderContent(pageText) {
-    return (
-      <div>123</div>
-    )
-  }
-
   render() {
     const { history } = this.props;
     // 获取url上的路径
+    console.log(this.props.match);
     const path = this.props.match.path;
 
     return (
@@ -30,7 +25,6 @@ class HKLayout extends React.Component {
           unselectedTintColor="#949494"
           tintColor="#33A3F4"
           barTintColor="white"
-          hidden={this.state.hidden}
         >
           <TabBar.Item
             title="首页"
@@ -41,10 +35,9 @@ class HKLayout extends React.Component {
             onPress={() => {
               history.push("/");
             }}
-            data-seed="logId"
           >
             {/* 放首页 */}
-            {this.props.children}
+            {path === "/" && this.props.children}
             {/* 放首页 */}
           </TabBar.Item>
           <TabBar.Item
@@ -58,7 +51,7 @@ class HKLayout extends React.Component {
             }}
           >
             {/* 找房 */}
-            {this.props.children}
+            {path === "/HKList" && this.props.children}
             {/* 找房 */}
           </TabBar.Item>
           <TabBar.Item
@@ -72,7 +65,7 @@ class HKLayout extends React.Component {
             }}
           >
             {/* 资讯 */}
-            {this.props.children}
+            {path === "/News" && this.props.children}
             {/* 资讯 */}
           </TabBar.Item>
           <TabBar.Item
@@ -86,7 +79,7 @@ class HKLayout extends React.Component {
             }}
           >
             {/* 我的 */}
-            {this.props.children}
+            {path === "/My" && this.props.children}
             {/* 我的 */}
           </TabBar.Item>
         </TabBar>
