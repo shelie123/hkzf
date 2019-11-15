@@ -1,14 +1,26 @@
 import React, { Component,Fragment } from 'react'
+
+import {HashRouter as Router,Route} from "react-router-dom"
+import HKLayout from "./components/common/HKLayout/HKLayout"
+import Home from "./pages/Home/Home";
+import HKList from "./pages/HKList/HKList"
+import News from "./pages/News/News"
+import My from "./pages/My/My"
+
 // 引入ant组件
-import {Button} from "antd-mobile"
+// import {Button} from "antd-mobile"
 
 class App extends Component {
   render() {
     return (
       <Fragment>
-      <div>
-        <h1>hkzf</h1>
-      </div>
+
+        <Router>
+          <Route exact path="/" render={() => <HKLayout><Home/></HKLayout>}></Route>
+          <Route path="/HKList" render={() => <HKLayout><HKList/></HKLayout>}></Route>
+          <Route path="/News" render={() => <HKLayout><News/></HKLayout>}></Route>
+          <Route path="/My" render={() => <HKLayout><My/></HKLayout>}></Route>
+        </Router>   
       </Fragment>
     )
   }
