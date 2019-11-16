@@ -3,6 +3,9 @@ import { Carousel } from "antd-mobile";
 import axios from "../../utils/request";
 import IndexCss from "./Home.module.scss";
 
+// 引入搜索框
+import Search from "../../components/common/Search/Search";
+
 // 引入本地的图片，类似js文件一样来引入
 import nav1 from "../../assets/images/nav-1.png";
 import nav2 from "../../assets/images/nav-2.png";
@@ -50,7 +53,10 @@ class Home extends Component {
         {/* jsx中  普通的变量和便签可以在一起写 */}
 
         {/* 轮播图开始 */}
-        <div className="home_Carousel">
+        <div className={IndexCss.home_Carousel}>
+          <div className={IndexCss.search}>
+            <Search />
+          </div>
           {swiperList.length && (
             <Carousel autoplay infinite>
               {swiperList.map(val => (

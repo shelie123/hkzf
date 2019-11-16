@@ -1,0 +1,43 @@
+.search {
+  box-sizing: border-box;
+  padding: 10px;
+  .searchCity {
+    display: flex;
+    .city_info {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      background: #fff;
+      border-radius: 5px;
+      .cityName {
+        width: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        div {
+          box-sizing: border-box;
+          margin: 5px 0;
+          padding-right: 10px;
+          border-right: 1px solid #ddd;
+        }
+      }
+      input {
+        flex: 1;
+        border: none;
+        text-indent: 2em;
+        border-radius: 5px;
+      }
+    }
+
+    .search_icon {
+      width: 40px;
+      display: flex;
+      color: #fff;
+      padding-left: 10px;
+      .iconfont {
+        font-size: 30px;
+      }
+    }
+  }
+}

@@ -1,3 +1,15 @@
+.home_Carousel {
+  position: relative;
+}
+
+.home_Carousel .search {
+  box-sizing: border-box;
+  width: 100%;
+  position: absolute;
+  z-index: 999;
+  top: 10px;
+}
+
 .home_nav {
   display: flex;
   background: #fff;

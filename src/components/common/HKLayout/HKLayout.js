@@ -16,7 +16,6 @@ class HKLayout extends React.Component {
   render() {
     const { history } = this.props;
     // 获取url上的路径
-    console.log(this.props.match);
     const path = this.props.match.path;
 
     return (
@@ -37,6 +36,7 @@ class HKLayout extends React.Component {
             }}
           >
             {/* 放首页 */}
+          
             {path === "/" && this.props.children}
             {/* 放首页 */}
           </TabBar.Item>
