@@ -34,7 +34,10 @@ class Search extends PureComponent {
               </div>
               <input type="text" placeholder="请输入小区或者地址" />
             </div>
-            <div className={IndexCss.search_icon}>
+            <div
+              onClick={() => this.props.history.push("/BdMap")}
+              className={IndexCss.search_icon}
+            >
               <i
                 className={["iconfont icon-map", IndexCss.iconfont].join(" ")}
               ></i>
