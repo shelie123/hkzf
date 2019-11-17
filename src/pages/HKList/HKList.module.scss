@@ -1,9 +1,57 @@
+// .main_list {
+//   // 高度=页面的高度-导航栏和尾部 tab 的高度
+//   background-color: #fff;
+//   height: calc(100vh - 45px -50px);
+//   overflow: hidden;
+//   position: relative;
+//   .city_item {
+//     padding-left: 10px;
+
+//     .city_item_title {
+//       height: 40px;
+//       display: flex;
+//       align-items: center;
+//       color: #666;
+//       font-size: 12px;
+//     }
+//     .city_item_group {
+//       .city_item_inner {
+//         font-size: 15px;
+//         height: 40px;
+//         display: flex;
+//         align-items: center;
+//         border-bottom: 1px dashed #ccc;
+//       }
+//     }
+//   }
+//   .letter_list {
+//     position: absolute;
+//     top: 2px;
+//     right: 10px;
+//     .letter_item {
+//       height: 26px;
+//       width: 26px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//     }
+//     .active {
+//       background-color: green;
+//       color: #fff;
+//       border-radius: 50%;
+//     }
+//   }
+// }
+
 .main_list {
-  // 高度=页面的高度-导航栏和尾部 tab 的高度
-  height: calc(100vh-45px-50px);
+  // 高度 = 页面的高度 - 导航栏 和 尾部 tab 的高度
+  background-color: #fff;
+  height: calc(100vh - 45px - 50px);
   overflow: hidden;
+  position: relative;
   .city_item {
     padding-left: 10px;
+
     .city_item_title {
       height: 40px;
       display: flex;
@@ -11,6 +59,7 @@
       color: #666;
       font-size: 12px;
     }
+
     .city_item_group {
       .city_item_inner {
         font-size: 15px;
@@ -19,6 +68,24 @@
         align-items: center;
         border-bottom: 1px dashed #ccc;
       }
+    }
+  }
+
+  .letter_list {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    .letter_item {
+      height: 26px;
+      width: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .active {
+      background-color: green;
+      color: #fff;
+      border-radius: 50%;
     }
   }
 }

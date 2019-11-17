@@ -2,6 +2,15 @@ import { SET_CITY } from "../actionTypes";
 // const BMap = window.BMap;
 import { getCity } from "../../utils/baiduMap";
 
+// 同步设置城市的名称
+
+export const syncSetCity = cityName => {
+  return {
+    type: SET_CITY,
+    value: cityName
+  };
+};
+
 // 异步设置城市名称
 export const setCity = () => {
   return dispatch => {

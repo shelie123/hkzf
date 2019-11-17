@@ -1,14 +1,19 @@
 import React, { Component, Fragment } from "react";
-import { NavBar, Icon } from "antd-mobile";
+import { NavBar, Icon, Toast } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "../../utils/request";
 import IndexCss from "./HKList.module.scss";
-import { List } from "react-virtualized";
+import { List, AutoSizer } from "react-virtualized";
+import { syncSetCity } from "../../store/actionCreator";
 class HKList extends Component {
   state = {
     // 页面要渲染的城市列表
-    totalCitys: []
+    totalCitys: [],
+    // 右侧的字母列表
+    letterList: [],
+    // 当前显示的索引
+    currentIndex: 0
   };
 
   componentDidMount() {
@@ -22,6 +27,8 @@ class HKList extends Component {
 
     // 定义总的城市的数组
     let totalCitys = [];
+
+    let letterList = ["#", "热"];
 
     // 获取当前的城市
     const cityName = this.props.cityName;
@@ -71,11 +78,24 @@ class HKList extends Component {
         totalCitys.push({
           [firstLetter]: [v.label]
         });
+        letterList.push(firstLetter);
       }
     });
     // console.log(totalCitys);
-    this.setState({ totalCitys });
+    this.setState({ totalCitys, letterList });
   }
+
+  // 点击城市列表的事件、
+  cityItemChange = cityName => {
+    // 判断该城市下有没有房源信息
+    if (["北京", "上海", "深圳", "广州"].includes(cityName)) {
+      this.props.setCity(cityName);
+      // 跳转页面
+      this.props.history.push("/");
+    } else {
+      Toast.info("该城市下没有房源信息", 1);
+    }
+  };
 
   // 城市列表每一行如何渲染
   rowRenderer = ({
@@ -94,11 +114,15 @@ class HKList extends Component {
       // {当前地址：Array(1)}
       // {热门城市：Array(4)}
       // {A:Array(1)}
-      <div key={key} className={IndexCss.city_item} style={style}>
+      <div className={IndexCss.city_item} key={key} style={style}>
         <div className={IndexCss.city_item_title}>{property}</div>
         <div className={IndexCss.city_item_group}>
           {item[property].map((v, i) => (
-            <div key={v} className={IndexCss.city_item_inner}>
+            <div
+              key={v}
+              onClick={() => this.cityItemChange(v)}
+              className={IndexCss.city_item_inner}
+            >
               {v}
             </div>
           ))}
@@ -120,16 +144,27 @@ class HKList extends Component {
     return rowHeight;
   };
 
+  // 右侧字母的点击事件
+  handleLetterClick = index => {
+    this.setState({ currentIndex: index });
+  };
+
+  // 行渲染完毕事件
+  // startIndex 行渲染完毕之后的 第一行的索引
+  rowsRendered = ({ startIndex }) => {
+    this.setState({ currentIndex: startIndex });
+  };
+
   render() {
     // console.log(this.props);
-    const { totalCitys } = this.state;
+    const { totalCitys, letterList, currentIndex } = this.state;
     // 获取页面的宽度即可
     // const width =document.documentElement.width
-    const width = window.screen.width;
+    // const width = window.screen.width;
 
-    // List高度=页面的高度-导航栏和尾部tab的高度
-    let height = window.screen.height - 45 - 50;
-    console.log(height);
+    // // List高度=页面的高度-导航栏和尾部tab的高度
+    // let height = window.screen.height - 45 - 50;
+    // console.log(height);
 
     return (
       <Fragment>
@@ -141,36 +176,48 @@ class HKList extends Component {
           >
             城市选择
           </NavBar>
-          <div className={IndexCss.main_list}>
-            {/* {this.state.totalCitys.map((v, i) => {
-              // 获取当前对象的属性名
-              const property = Object.keys(v)[0];
-              return (
-                // {当前地址：Array(1)}
-                // {热门城市：Array(4)}
-                // {A:Array(1)}
-                <div key={i} className={IndexCss.city_item}>
-                  <div className={IndexCss.city_item_title}>{property}</div>
-                  <div className={IndexCss.city_item_group}>
-                    {v[property].map((vv, ii) => (
-                      <div key={vv} className={IndexCss.city_item_inner}>
-                        {vv}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })} */}
-
+          <div className={IndexCss.main_list}>    
             {/* 使用了可视区域插件 开始 */}
-            <List
-              width={width}
-              height={height}
-              rowCount={totalCitys.length}
-              rowHeight={this.rowHeight}
-              rowRenderer={this.rowRenderer}
-            />
+            <AutoSizer>
+              {({ width, height }) => (
+                <List
+                  // 容器的宽度
+                  width={width}
+                  // 可视区域的高度
+                  height={height}
+                  // 列表的数组的长度
+                  rowCount={totalCitys.length}
+                  // 每一行的高度
+                  rowHeight={this.rowHeight}
+                  // 每一行如何渲染
+                  rowRenderer={this.rowRenderer}
+                  // 设置滚动到第几行
+                  scrollToIndex={currentIndex}
+                  // 设置对齐方式即可
+                  scrollToAlignment="start"
+                  // 行渲染完毕事件
+                  onRowsRendered={this.rowsRendered}
+                />
+              )}
+            </AutoSizer>
             {/* 使用了可视区域插件 结束 */}
+
+            {/* 字母列表 开始 */}
+            <div className={IndexCss.letter_list}>
+              {letterList.map((v, i) => (
+                <div
+                  onClick={() => this.handleLetterClick(i)}
+                  key={v}
+                  className={[
+                    IndexCss.letter_item,
+                    i === currentIndex ? IndexCss.active : ""
+                  ].join(" ")}
+                >
+                  {v}
+                </div>
+              ))}
+            </div>
+            {/* 字母列表 结束 */}
           </div>
         </div>
       </Fragment>
@@ -182,4 +229,12 @@ const mapStateToProps = state => ({
   cityName: state.mapReducer.cityName
 });
 
-export default connect(mapStateToProps, null)(withRouter(HKList));
+const mapDispatchToProps = dispatch => {
+  return {
+    setCity(cityName) {
+      dispatch(syncSetCity(cityName));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HKList));
