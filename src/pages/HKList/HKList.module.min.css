@@ -1,0 +1,1 @@
+.main_list{height:calc(100vh-45px-50px);overflow:hidden}.main_list .city_item{padding-left:10px}.main_list .city_item .city_item_title{height:40px;display:flex;align-items:center;color:#666;font-size:12px}.main_list .city_item .city_item_group .city_item_inner{font-size:15px;height:40px;display:flex;align-items:center;border-bottom:1px dashed #ccc}

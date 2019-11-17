@@ -1,0 +1,24 @@
+.main_list {
+  // 高度=页面的高度-导航栏和尾部 tab 的高度
+  height: calc(100vh-45px-50px);
+  overflow: hidden;
+  .city_item {
+    padding-left: 10px;
+    .city_item_title {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 12px;
+    }
+    .city_item_group {
+      .city_item_inner {
+        font-size: 15px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px dashed #ccc;
+      }
+    }
+  }
+}

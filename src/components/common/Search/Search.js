@@ -7,12 +7,12 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 // 引入action
-import { setCity } from "../../../store/actionCreator";
+// import { setCity } from "../../../store/actionCreator";
 
 class Search extends PureComponent {
-  componentDidMount() {
-    this.props.setCit();
-  }
+  // componentDidMount() {
+  //   this.props.setCit();
+  // }
 
   render() {
     return (
@@ -54,13 +54,14 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setCit() {
-      // 有dispatch 下一步就会到reducer中了！！！
-      dispatch(setCity());
-    }
-  };
-};
+// // 2 负责 将 组件中的事件 props.event  映射到 reducer中
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setCit() {
+//       // 有dispatch 下一步就会到reducer中了！！！
+//       dispatch(setCity());
+//     }
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search));
+export default connect(mapStateToProps, null)(withRouter(Search));
