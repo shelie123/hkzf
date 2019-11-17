@@ -1,8 +1,19 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 import IndexCss from "./Search.module.scss";
 import { Icon } from "antd-mobile";
+import { withRouter } from "react-router-dom";
 
-class Search extends Component {
+// 引入store的接收器
+import { connect } from "react-redux";
+
+// 引入action
+import { setCity } from "../../../store/actionCreator";
+
+class Search extends PureComponent {
+  componentDidMount() {
+    this.props.setCit();
+  }
+
   render() {
     return (
       <Fragment>
@@ -10,7 +21,13 @@ class Search extends Component {
           <div className={IndexCss.searchCity}>
             <div className={IndexCss.city_info}>
               <div className={IndexCss.cityName}>
-                <span>广州</span>
+                <span
+                  onClick={() => {
+                    this.props.history.push("/HKList");
+                  }}
+                >
+                  {this.props.cityName}
+                </span>
                 <div>
                   <Icon type="down" />
                 </div>
@@ -29,4 +46,21 @@ class Search extends Component {
   }
 }
 
-export default Search;
+// 负责将store的数据映射到组合的props rcre
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    cityName: state.mapReducer.cityName
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCit() {
+      // 有dispatch 下一步就会到reducer中了！！！
+      dispatch(setCity());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search));

@@ -3,7 +3,7 @@ import { TabBar } from "antd-mobile";
 // 引入withRouter 函数
 import { withRouter } from "react-router-dom";
 
-class HKLayout extends React.Component {
+class HKLayout extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
