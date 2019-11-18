@@ -5,6 +5,7 @@ import IndexCss from "./BdMap.module.scss";
 import { connect } from "react-redux";
 import axios from "../../utils/request";
 import HouseItem from "../../components/common/HouseItem/HouseItem";
+import { width } from "dom-helpers";
 
 const BMap = window.BMap;
 
@@ -135,7 +136,7 @@ class BdMap extends Component {
         }套 </div>`,
         opts
       );
-      label.addEventListener("click", () => {
+      label.addEventListener("click", e => {
         //   1、获取被点击的城市名称和id
         const name = v.label;
         const id = v.value;
@@ -146,6 +147,14 @@ class BdMap extends Component {
           //   console.log(res);
           // });
           this.getHouses(id);
+
+          // 获取手指按下的坐标
+          const client = e.changedTouches[0];
+          // x y 如何计算？？
+          const y = client.clientY - 100 - 45;
+          const x = client.clientX - window.screen.width / 2;
+          // 从目前的位置出发 移动多少px 不是类似定位
+          this.Map.panBy(-x, -y);
         } else {
           // 清除覆盖物
           this.Map.clearOverlays();
@@ -191,7 +200,8 @@ class BdMap extends Component {
             ].join(" ")}
           >
             <div className={IndexCss.house_detail_title}>
-              <span>房屋列表</span><span>更多房源</span>
+              <span>房屋列表</span>
+              <span>更多房源</span>
             </div>
             <div className={IndexCss.house_detail_content}>
               {this.state.houses.map((v, i) => (

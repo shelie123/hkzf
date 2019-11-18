@@ -14,7 +14,11 @@ class HouseItem extends Component {
           <div className={IndexCss.house_item_info}>
             <div className={IndexCss.house_info_title}>{title}</div>
             <div className={IndexCss.house_info_desc}>{desc}</div>
-            <div className={IndexCss.house_info_tags}><span>{tags}</span></div>
+            <div className={IndexCss.house_info_tags}>
+              {tags.map(v => (
+                <span key={v}>{v}</span>
+              ))}
+            </div>
             <div className={IndexCss.house_info_price}>
               <span>{price}</span>元/月
             </div>
