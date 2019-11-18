@@ -1,3 +1,8 @@
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .allmap {
   height: calc(100vh - 45px);
 }
