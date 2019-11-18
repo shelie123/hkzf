@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import IndexCss from "./BdMap.module.scss";
 import { connect } from "react-redux";
 import axios from "../../utils/request";
+import HouseItem from "../../components/common/HouseItem/HouseItem";
 
 const BMap = window.BMap;
 
@@ -30,6 +31,12 @@ class BdMap extends Component {
   // 地图对象 没有把它放入state中 没有必要
   // state中的数据 都是要在视图中显示 渲染
   Map = null;
+
+  state = {
+    showCss: false,
+    // 详细的房源列表数组
+    houses: []
+  };
   componentDidMount() {
     // // 平移缩放控件
     // map.addControl(new BMap.NavigationControl());
@@ -55,6 +62,12 @@ class BdMap extends Component {
     // 获取城市名称
     this.Map = new BMap.Map("allmap");
     this.Map.addControl(new BMap.NavigationControl());
+
+    // 绑定了地图的拖拽事件
+    this.Map.addEventListener("dragstart", () => {
+      this.setState({ showCss: false });
+    });
+
     const cityName = this.props.cityName;
     const id = null;
     const currentPoint = {
@@ -63,6 +76,21 @@ class BdMap extends Component {
     };
     this.drawHouse(cityName, id, currentPoint);
   }
+
+  // 返回当前的缩放层级等数据
+  getZoom = (function() {
+    let arr = [
+      { id: 0, zoom: 10, cls: "circle" },
+      { id: 1, zoom: 12, cls: "circle" },
+      { id: 2, zoom: 15, cls: "rect" }
+    ];
+    let index = -1;
+    return function() {
+      index++;
+      index = index === 3 ? 0 : index;
+      return arr[index];
+    };
+  })();
 
   // 画房源-圆圈
   //   1 封装旧的代码
@@ -89,7 +117,8 @@ class BdMap extends Component {
       currentPoint.longitude,
       currentPoint.latitude
     );
-    map.centerAndZoom(tmpPoint, 11);
+    const zoomObj = this.getZoom();
+    map.centerAndZoom(tmpPoint, zoomObj.zoom);
 
     if (!id) {
       id = (await axios.get("area/info?name=" + cityName)).data.body.value;
@@ -101,17 +130,27 @@ class BdMap extends Component {
         position: point
       };
       const label = new BMap.Label(
-        `<div class='${IndexCss.circle}'>${v.label} <br/> ${v.count}套 </div>`,
+        `<div class='${IndexCss[zoomObj.cls]}'>${v.label} <br/> ${
+          v.count
+        }套 </div>`,
         opts
       );
       label.addEventListener("click", () => {
         //   1、获取被点击的城市名称和id
         const name = v.label;
         const id = v.value;
-        // this.drawHouse(name, id);
-        // 清除覆盖物
-        this.Map.clearOverlays();
-        this.drawHouse(name, id, v.coord);
+
+        if (zoomObj.id === 2) {
+          // 加载该房源下的详情数据
+          // axios.get("/houses?cityId=" + id).then(res => {
+          //   console.log(res);
+          // });
+          this.getHouses(id);
+        } else {
+          // 清除覆盖物
+          this.Map.clearOverlays();
+          this.drawHouse(name, id, v.coord);
+        }
       });
       label.setStyle({
         border: "none",
@@ -119,6 +158,18 @@ class BdMap extends Component {
       });
       map.addOverlay(label);
     });
+  };
+
+  // 获取最底层的房源列表信息 -- 详情
+  getHouses = async id => {
+    const res = await axios.get("/houses?cityId=" + id);
+
+    this.setState({ houses: res.data.body.list, showCss: true });
+  };
+
+  showDetail = () => {
+    console.log("显示房源列表");
+    this.setState({ showCss: true });
   };
 
   render() {
@@ -129,9 +180,28 @@ class BdMap extends Component {
           icon={<Icon type="left" />}
           onLeftClick={() => this.props.history.go(-1)}
         >
-          地图找房
+          <span onClick={this.showDetail}>地图找房</span>
         </NavBar>
-        <div className={IndexCss.allmap} id="allmap"></div>
+        <div className={IndexCss.bd_view}>
+          <div className={IndexCss.allmap} id="allmap"></div>
+          <div
+            className={[
+              IndexCss.house_detail,
+              this.state.showCss ? IndexCss.show_css : ""
+            ].join(" ")}
+          >
+            <div className={IndexCss.house_detail_title}>
+              <span>房屋列表</span><span>更多房源</span>
+            </div>
+            <div className={IndexCss.house_detail_content}>
+              {this.state.houses.map((v, i) => (
+                <div key={i} className={IndexCss.house_bd_item}>
+                  <HouseItem {...v} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </Fragment>
     );
   }

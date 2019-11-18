@@ -1,0 +1,57 @@
+.house_item {
+  box-sizing: border-box;
+  display: flex;
+  padding: 10px;
+}
+
+.house_item .house_item_img {
+  flex: 1;
+  padding: 5px 0;
+}
+
+.house_item .house_item_img img {
+  width: 106px;
+  height: 80px;
+}
+
+.house_item .house_item_info {
+  box-sizing: border-box;
+  padding: 5px 10px;
+  flex: 2;
+  overflow: hidden;
+}
+
+.house_item .house_item_info > div {
+  padding: 3px 0;
+}
+
+.house_item .house_item_info .house_info_title {
+  font-weight: 600;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.house_item .house_item_info .house_info_desc {
+  display: block;
+  color: #afb2b3;
+  font-size: 12px;
+}
+
+.house_item .house_item_info .house_info_tags span {
+  background: #e1f5f8;
+  color: #39becd;
+  padding: 0 5px;
+}
+
+.house_item .house_item_info .house_info_price {
+  color: red;
+  font-size: 12px;
+}
+
+.house_item .house_item_info .house_info_price span {
+  font-size: 14px;
+  font-weight: 600;
+  padding-right: 5px;
+}
