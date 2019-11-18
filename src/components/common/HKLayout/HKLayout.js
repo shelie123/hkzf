@@ -44,14 +44,14 @@ class HKLayout extends React.PureComponent {
             icon={<i className="iconfont icon-findHouse" />}
             selectedIcon={<i className="iconfont icon-findHouse" />}
             title="找房"
-            key="HKList"
-            selected={path === "/HKList"}
+            key="HouseList"
+            selected={path === "/HouseList"}
             onPress={() => {
-              history.push("/HKList");
+              history.push("/HouseList");
             }}
           >
             {/* 找房 */}
-            {path === "/HKList" && this.props.children}
+            {path === "/HouseList" && this.props.children}
             {/* 找房 */}
           </TabBar.Item>
           <TabBar.Item

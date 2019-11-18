@@ -4,6 +4,7 @@ import { HashRouter as Router, Route } from "react-router-dom";
 import HKLayout from "./components/common/HKLayout/HKLayout";
 import Home from "./pages/Home/Home";
 import HKList from "./pages/HKList/HKList";
+import HouseList from "./pages/HouseList/HouseList";
 import News from "./pages/News/News";
 import My from "./pages/My/My";
 import BdMap from "./pages/BdMap/BdMap";
@@ -21,7 +22,7 @@ class App extends Component {
 
   render() {
     const { cityName } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     return (
       <Fragment>
         {cityName && (
@@ -35,11 +36,12 @@ class App extends Component {
                 </HKLayout>
               )}
             ></Route>
+            <Route path="/HKList" component={HKList}></Route>
             <Route
-              path="/HKList"
+              path="/HouseList"
               render={() => (
                 <HKLayout>
-                  <HKList />
+                  <HouseList />
                 </HKLayout>
               )}
             ></Route>
