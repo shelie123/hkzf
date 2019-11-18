@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { NavBar, Icon } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import IndexCss from "./BdMap.module.scss";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import axios from "../../utils/request";
 
 const BMap = window.BMap;
@@ -28,33 +28,39 @@ class BdMap extends Component {
     this.getCity();
   }
 
-  getCity = () => {
-    // 创建地图实例
-    var map = new BMap.Map("allmap");
-    // 创建点坐标
-    var point = new BMap.Point(116.417854, 39.921988);
-    // 初始化地图，设置中心点坐标和地图级别
-    map.centerAndZoom(point, 11);
+  getCity = async () => {
+    // 获取城市的名称
+    const cityName = this.props.cityName;
+    // 获取该城市的id
+    const id = (await axios.get("area/info?name=" + cityName)).data.body.value;
+    // 获取该id下的房源数据
+    const houses = (await axios.get("area/map?id=" + id)).data.body;
 
-    // 定义配置对象
-    var opts = {
-      position: point, //指定文本标注所在的地理位置
-      offset: new BMap.Size(30, -30) //设置文本偏移量
-    };
+    this.drawCircle(houses);
+  };
 
-    // 定义了一个文本对象，特别要在注意动态的  其他插件所生成的标签的特点
-    var label = new BMap.Label(
-      `<div class='${IndexCss.circle}'>文本</div>`,
-      opts
-    );
-
-    // 设置样式
-    label.setStyle({
-      border: "none",
-      backgroundColor: "transparent"
+  // 画房源-圆圈
+  drawCircle = houses => {
+    const map = new BMap.Map("allmap");
+    // const cityPoint = new BMap.Point(this.props.point.lng, this.props.point.lat);
+    const cityName = this.props.cityName;
+    // 设置当前城市的经纬度！！！ cityName="广州市"
+    map.centerAndZoom(cityName, 11);
+    houses.forEach(v => {
+      const point = new BMap.Point(v.coord.longitude, v.coord.latitude);
+      const opts = {
+        position: point
+      };
+      const label = new BMap.Label(
+        `<div class='${IndexCss.circle}'>${v.label} <br/> ${v.count}套 </div>`,
+        opts
+      );
+      label.setStyle({
+        border: "none",
+        backgroundColor: "transparent"
+      });
+      map.addOverlay(label);
     });
-    // 把覆盖添加到地图上
-    map.addOverlay(label);
   };
 
   render() {
@@ -72,4 +78,10 @@ class BdMap extends Component {
     );
   }
 }
-export default withRouter(BdMap);
+
+const mapStateToProps = state => ({
+  cityName: state.mapReducer.cityName,
+  point: state.mapReducer.point
+});
+
+export default connect(mapStateToProps, null)(withRouter(BdMap));

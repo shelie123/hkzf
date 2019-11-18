@@ -21,7 +21,8 @@ export const getCity = () => {
       // 2、根据坐标得到地址 城市名称
       myGeo.getLocation(new BMap.Point(point.lng, point.lat), function(result) {
         const cityName = result.addressComponents.city;
-        resolve(cityName);
+
+        resolve({ cityName, point });
       });
     });
   });

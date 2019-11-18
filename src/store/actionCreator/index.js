@@ -7,7 +7,7 @@ import { getCity } from "../../utils/baiduMap";
 export const syncSetCity = cityName => {
   return {
     type: SET_CITY,
-    value: cityName
+    value: { cityName }
   };
 };
 
@@ -32,10 +32,11 @@ export const setCity = () => {
     //     });
     //   });
     // };
-    getCity().then(cityName => {
+    getCity().then(({ cityName, point }) => {
+      cityName = cityName.substr(0, cityName.length - 1);
       dispatch({
         type: SET_CITY,
-        value: cityName
+        value: { cityName, point }
       });
     });
   };
