@@ -5,7 +5,6 @@ import IndexCss from "./BdMap.module.scss";
 import { connect } from "react-redux";
 import axios from "../../utils/request";
 import HouseItem from "../../components/common/HouseItem/HouseItem";
-import { width } from "dom-helpers";
 
 const BMap = window.BMap;
 

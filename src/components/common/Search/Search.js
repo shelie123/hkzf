@@ -32,6 +32,9 @@ class Search extends PureComponent {
                   <Icon type="down" />
                 </div>
               </div>
+              <i
+                className={["iconfont icon-seach", IndexCss.seach].join(" ")}
+              ></i>
               <input type="text" placeholder="请输入小区或者地址" />
             </div>
             <div

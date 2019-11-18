@@ -9,6 +9,7 @@
       display: flex;
       background: #fff;
       border-radius: 5px;
+      position: relative;
       .cityName {
         width: 70px;
         display: flex;
@@ -21,6 +22,12 @@
           padding-right: 10px;
           border-right: 1px solid #ddd;
         }
+      }
+      .seach {
+        position: absolute;
+        top: 10px;
+        left: 75px;
+        color: #9c9fa1;
       }
       input {
         flex: 1;
@@ -37,6 +44,7 @@
       padding-left: 10px;
       .iconfont {
         font-size: 30px;
+        color: #00ae94;
       }
     }
   }

@@ -13,6 +13,7 @@
   display: flex;
   background: #fff;
   border-radius: 5px;
+  position: relative;
 }
 
 .search .searchCity .city_info .cityName {
@@ -27,6 +28,13 @@
   margin: 5px 0;
   padding-right: 10px;
   border-right: 1px solid #ddd;
+}
+
+.search .searchCity .city_info .seach {
+  position: absolute;
+  top: 10px;
+  left: 75px;
+  color: #9c9fa1;
 }
 
 .search .searchCity .city_info input {
@@ -45,4 +53,5 @@
 
 .search .searchCity .search_icon .iconfont {
   font-size: 30px;
+  color: #00ae94;
 }
